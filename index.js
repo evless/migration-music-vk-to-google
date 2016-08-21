@@ -70,9 +70,7 @@ let addTrack = (numb) => {
 
 https.get(options, (request) => {
     request
-        .on('data', (chunk) => {
-            body.push(chunk)
-        })
+        .on('data', (chunk) => body.push(chunk))
         .on('end', () => {
             body = JSON.parse(Buffer.concat(body).toString());
             if (!body.response) {
