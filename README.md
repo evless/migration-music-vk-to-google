@@ -15,17 +15,18 @@
 
 ### Использование
 Есть 2 варианта использования:
+
 1. Через email и пароль от google
 
-```
-node index.js --token ACCESS_TOKEN --user_id USER_ID --email GOOGLE_EMAIL --password GOOGLE_PASSWORD --name_list NAME_PLAY_LIST
-```
+    ```
+    node index.js --token ACCESS_TOKEN --user_id USER_ID --email GOOGLE_EMAIL --password GOOGLE_PASSWORD --name_list NAME_PLAY_LIST
+    ```
 
 2. Через получение токена для google
 
-```
-node index.js --token ACCESS_TOKEN --user_id USER_ID --google_token GOOGLE_TOKEN --name_list NAME_PLAY_LIST
-```
+    ```
+    node index.js --token ACCESS_TOKEN --user_id USER_ID --google_token GOOGLE_TOKEN --name_list NAME_PLAY_LIST
+    ```
 
 ### Описание флагов
 * ACCESS_TOKEN - вставляем значение, полученное раньше
