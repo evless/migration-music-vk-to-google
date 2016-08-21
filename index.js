@@ -94,9 +94,12 @@ new Promise((resolve, reject) => {
     return new Promise((resolve, reject) => {
         pm.addPlayList(playListName, (err, body) => {
             playListId = body.mutate_response[0].id;
-            addTrack(currentTrack, resolve);
+            resolve();
         });
-    })
+    });
+})
+.then((res) => {
+    return new Promise((resolve, reject) => addTrack(currentTrack, resolve));
 })
 .then((res) => {
     console.log(colors.magenta('========================'));
