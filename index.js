@@ -110,4 +110,5 @@ new Promise((resolve, reject) => {
     console.log('\n');
     console.log(colors.magenta('------- Список песен, которые не нашлись и нет исполнителя -------'));
     console.log(notArtist);
-});
+})
+.catch(console.log);

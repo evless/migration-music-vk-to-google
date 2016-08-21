@@ -1,6 +1,6 @@
 {
   "name": "migration-music-vk-to-google",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Music the VK to the GoogleMusic",
   "main": "index.js",
   "dependencies": {
