@@ -1,0 +1,26 @@
+{
+  "name": "migration-music-vk-to-google",
+  "version": "0.0.1",
+  "description": "Music the VK to the GoogleMusic",
+  "main": "index.js",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "minimist": "^1.2.0",
+    "progress": "^1.1.8",
+    "playmusic": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Slaaless/migration-music-vk-to-google.git"
+  },
+  "author": "Linless",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Slaaless/migration-music-vk-to-google/issues"
+  },
+  "homepage": "https://github.com/Slaaless/migration-music-vk-to-google#readme"
+}
