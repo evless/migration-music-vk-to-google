@@ -16,6 +16,7 @@
 2. node index.js --token ACCESS_TOKEN --user_id USER_ID --email GOOGLE_EMAIL --password GOOGLE_PASSWORD --name_list NAME_PLAY_LIST
 
 ### Описание флагов
+* ACCESS_TOKEN - вставляем значение, полученное раньше
 * USER_ID - айдишник пользователя, у которого берём музыку (не обязательно свой). Айдишник можно взять если перейти на кладку "музыка" в ВК. Он будет в дресной строке. Пример: https://vk.com/audios19811123 -> нам нужны только цифры
 * GOOGLE_EMAIL - почта, под которой нужно авторизоваться
 * GOOGLE_PASSWORD - пароль для авторизации
