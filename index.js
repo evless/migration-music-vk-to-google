@@ -17,7 +17,7 @@ let playListName = argv.name_list;
 if (!token) throw Error('Не указан токен от VK.')
 if (!user_id) throw Error('Не указан user_id от VK.')
 if (!email) throw Error('Не указана почта от google.')
-if (!password) throw Error('Не указан пароль от google.')
+// if (!password) throw Error('Не указан пароль от google.')
 if (!playListName) throw Error('Не указано имя плейлиста.')
 
 let result = [], notTracks = '', notArtist = '', countSuccess = 0, bar, currentTrack = 0, countTracks, playListId;
@@ -75,14 +75,19 @@ new Promise((resolve, reject) => {
 })
 .then((res) => {
     return new Promise((resolve, reject) => {
-        countTracks = res.length;
+        pm.login({email: email, password: password}, (err, body) => resolve(body))
+    });
+})
+.then((res) => {
+    return new Promise((resolve, reject) => {
+        countTracks = result.length;
         let barOptions = {
             total: countTracks,
             width: 35
         };
         bar = new progress('Migration [:bar] :percent :etas', barOptions);
 
-        pm.init({email: email, password: password}, (err, body) => {
+        pm.init({masterToken: res.masterToken}, (err, body) => {
             if (err) {
                 console.log('Google Error: ' + err);
                 return;
@@ -94,6 +99,7 @@ new Promise((resolve, reject) => {
 .then((res) => {
     return new Promise((resolve, reject) => {
         pm.addPlayList(playListName, (err, body) => {
+            console.log(err);
             playListId = body.mutate_response[0].id;
             resolve();
         });
