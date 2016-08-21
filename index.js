@@ -23,25 +23,11 @@ if (!playListName) throw Error('Не указано имя плейлиста.')
 let body = [], result = [], notTracks = '', notArtist = '', countSuccess = 0, bar, currentTrack = 0, countTracks, playListId;
 let options = 'https://api.vk.com/method/audio.get?count=0&owner_id=' + user_id + '&access_token=' + token;
 
-let successResult = () => {
-    console.log(colors.magenta('========================'));
-    console.log(colors.magenta('     Процесс завершен   '));
-    console.log(colors.magenta('========================'));
-    console.log('\n');
-    console.log(colors.magenta('Удачно перенеслось: ' + countSuccess + '/' + countTracks));
-    console.log('\n');
-    console.log(colors.magenta('------- Список песен, которые не нашлись, но есть исполнитель -------'));
-    console.log(notTracks);
-    console.log('\n');
-    console.log(colors.magenta('------- Список песен, которые не нашлись и нет исполнителя -------'));
-    console.log(notArtist);
-}
-
-let addTrack = (numb) => {
+let addTrack = (numb, resolve) => {
     bar.tick();
     currentTrack++;
     if (numb >= countTracks || undefined == numb) {
-        successResult();
+        resolve();
         return;
     }
 
@@ -53,51 +39,75 @@ let addTrack = (numb) => {
                     pm.addTrackToPlayList(trackId, playListId, (err, data) => {
                         if (err) console.log(err);
                         countSuccess++;
-                        addTrack(currentTrack);
+                        addTrack(currentTrack, resolve);
                     });
                     return;
                 }
             }
 
             notTracks += result[numb] + '\n';
-            addTrack(currentTrack);
+            addTrack(currentTrack, resolve);
         } else {
             notArtist += result[numb] + '\n';
-            addTrack(currentTrack);
+            addTrack(currentTrack, resolve);
         }
     });
 }
 
-https.get(options, (request) => {
-    request
-        .on('data', (chunk) => body.push(chunk))
-        .on('end', () => {
-            body = JSON.parse(Buffer.concat(body).toString());
-            if (!body.response) {
-                console.log('VK Error: ' + body.response);
-                return;
-            }
-            body = body.response;
-            for (let i = 1; i < body.length; i++) {
-                result.push(body[i].artist + ' - ' + body[i].title);
-            }
-
-            countTracks = result.length;
-            let barOptions = {
-                total: countTracks,
-                width: 35
-            };
-            bar = new progress('Migration [:bar] :percent :etas', barOptions);
-
-            pm.init({email: email, password: password}, (err) => {
-                if (err) {
-                    console.log('Google Error: ' + err);
+new Promise((resolve, reject) => {
+    https.get(options, (request) => {
+        request
+            .on('data', (chunk) => body.push(chunk))
+            .on('end', () => {
+                body = JSON.parse(Buffer.concat(body).toString());
+                if (!body.response) {
+                    console.log('VK Error: ' + body.response);
                     return;
                 }
-                pm.addPlayList(playListName, (err, body) => {
-                    playListId = body.mutate_response[0].id;
-                    addTrack(currentTrack);
-                });
+                body = body.response;
+                for (let i = 1; i < body.length; i++) {
+                    result.push(body[i].artist + ' - ' + body[i].title);
+                }
+                resolve(result);
             });
+    });
+})
+.then((res) => {
+    return new Promise((resolve, reject) => {
+        countTracks = res.length;
+        let barOptions = {
+            total: countTracks,
+            width: 35
+        };
+        bar = new progress('Migration [:bar] :percent :etas', barOptions);
+
+        pm.init({email: email, password: password}, (err, body) => {
+            if (err) {
+                console.log('Google Error: ' + err);
+                return;
+            }
+            resolve();
         });
+    });
+})
+.then((res) => {
+    return new Promise((resolve, reject) => {
+        pm.addPlayList(playListName, (err, body) => {
+            playListId = body.mutate_response[0].id;
+            addTrack(currentTrack, resolve);
+        });
+    })
+})
+.then((res) => {
+    console.log(colors.magenta('========================'));
+    console.log(colors.magenta('     Процесс завершен   '));
+    console.log(colors.magenta('========================'));
+    console.log('\n');
+    console.log(colors.magenta('Удачно перенеслось: ' + countSuccess + '/' + countTracks));
+    console.log('\n');
+    console.log(colors.magenta('------- Список песен, которые не нашлись, но есть исполнитель -------'));
+    console.log(notTracks);
+    console.log('\n');
+    console.log(colors.magenta('------- Список песен, которые не нашлись и нет исполнителя -------'));
+    console.log(notArtist);
 });
