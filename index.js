@@ -20,7 +20,7 @@ if (!email) throw Error('Не указана почта от google.')
 if (!password) throw Error('Не указан пароль от google.')
 if (!playListName) throw Error('Не указано имя плейлиста.')
 
-let body = [], result = [], notTracks = '', notArtist = '', countSuccess = 0, bar, currentTrack = 0, countTracks, playListId;
+let result = [], notTracks = '', notArtist = '', countSuccess = 0, bar, currentTrack = 0, countTracks, playListId;
 let options = 'https://api.vk.com/method/audio.get?count=0&owner_id=' + user_id + '&access_token=' + token;
 
 let addTrack = (numb, resolve) => {
@@ -55,6 +55,7 @@ let addTrack = (numb, resolve) => {
 }
 
 new Promise((resolve, reject) => {
+    let body = [];
     https.get(options, (request) => {
         request
             .on('data', (chunk) => body.push(chunk))
