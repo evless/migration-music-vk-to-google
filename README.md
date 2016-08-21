@@ -4,7 +4,7 @@
 1. Установиться nodejs версии [5] (https://nodejs.org/dist/latest-v5.x/) или выше
 2. Получить access_token на сайте VK
 3. Что бы было подключено мобильное устройство к гугл аккаунту
-4. Отключить двухэтапная аутентификация в Google аккаунте :(
+4. [Отключить двухэтапная аутентификация] (https://myaccount.google.com/security) в Google аккаунте :(
 
 ### Получение access_token
 1. Переходим по ссылке и разрешаем действия http://oauth.vk.com/authorize?client_id=5598052&scope=audio&%20redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.0&response_type=token

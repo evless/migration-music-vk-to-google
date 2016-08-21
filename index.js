@@ -20,6 +20,9 @@ if (!email) throw Error('Не указана почта от google.')
 if (!password) throw Error('Не указан пароль от google.')
 if (!playListName) throw Error('Не указано имя плейлиста.')
 
+let body = [], result = [], notTracks = '', notArtist = '', countSuccess = 0, bar, currentTrack = 0, countTracks, playListId;
+let options = 'https://api.vk.com/method/audio.get?count=0&owner_id=' + user_id + '&access_token=' + token;
+
 let successResult = () => {
     console.log(colors.magenta('========================'));
     console.log(colors.magenta('     Процесс завершен   '));
@@ -65,8 +68,6 @@ let addTrack = (numb) => {
     });
 }
 
-let body = [], result = [], notTracks = '', notArtist = '', countSuccess = 0, bar;
-let options = 'https://api.vk.com/method/audio.get?count=0&owner_id=' + user_id + '&access_token=' + token;
 https.get(options, (request) => {
     request
         .on('data', (chunk) => {
@@ -83,7 +84,7 @@ https.get(options, (request) => {
                 result.push(body[i].artist + ' - ' + body[i].title);
             }
 
-            let countTracks = result.length, currentTrack = 0;
+            countTracks = result.length;
             let barOptions = {
                 total: countTracks,
                 width: 35
@@ -95,7 +96,6 @@ https.get(options, (request) => {
                     console.log('Google Error: ' + err);
                     return;
                 }
-                let playListId;
                 pm.addPlayList(playListName, (err, body) => {
                     playListId = body.mutate_response[0].id;
                     addTrack(currentTrack);
