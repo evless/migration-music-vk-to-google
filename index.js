@@ -17,7 +17,7 @@ let google_token = argv.google_token;
 
 if (!token) throw Error('Не указан токен от VK.');
 if (!user_id) throw Error('Не указан user_id от VK.');
-if (!google_token && (!email || !password)) throw Error('Не указан токен для google или логин и паролья от google.');
+if (!(google_token || (email && password))) throw Error('Не указан токен для google или логин и паролья от google.');
 if (!playListName) throw Error('Не указано имя плейлиста.');
 
 let result = [], notTracks = '', notArtist = '', countSuccess = 0, bar, currentTrack = 0, countTracks, playListId;
